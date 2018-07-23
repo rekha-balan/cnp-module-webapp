@@ -1,4 +1,6 @@
 # Public ip for assigning to app gateway - Only created if var.is_frontend is set to true
+data "azurerm_subscription" "current" {}
+
 resource "azurerm_public_ip" "appGwPIP" {
   count                        = "${var.is_frontend}"
   name                         = "appGW-PIP"
@@ -26,7 +28,7 @@ resource "azurerm_application_gateway" "waf" {
 
   gateway_ip_configuration {
     name      = "appGatewayIpConfig"
-    subnet_id = "${data.terraform_remote_state.core_infra.vnet_id}/subnets/${data.terraform_remote_state.core_infra.subnet_names[0]}"
+    subnet_id = "/subscriptions/${data.azurerm_subscription.current.subscription_id}/resourceGroups/core-infra-${var.env}/providers/Microsoft.Network/virtualNetworks/core-infra-vnet-${var.env}/subnets/app-gw-sb-${var.env}"
   }
 
   frontend_port {
