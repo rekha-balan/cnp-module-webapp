@@ -13,3 +13,7 @@ output "url" {
 output "resource_group_name" {
   value = "${azurerm_resource_group.rg.name}"
 }
+
+output "staging_app_settings" {
+  value = "${jsonencode(merge(var.staging_slot_app_settings, var.app_settings_defaults, local.app_settings_evaluated, var.app_settings))}"
+}
