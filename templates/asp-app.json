@@ -67,7 +67,19 @@
     },
     "asp_name": {
       "type": "string"
-    }
+    },
+    "team_name": {
+      "type": "string"
+    },
+    "team_contact": {
+      "type": "string"
+    },
+    "tier": {
+      "type": "string"
+    },
+    "destroy_me": {
+      "type": "string"
+    }  
   },
   "variables": {
     "base64AppSettingObject": "[base64(parameters('app_settings'))]",
@@ -98,8 +110,11 @@
               "location": "[parameters('location')]",
               "apiVersion": "2016-09-01",
               "tags": {
-                "displayName": "Application Service Plan",
-                "environment": "[parameters('env')]"
+                "Display Name": "Application Service Plan",
+                "Deployment Environment": "[parameters('env')]",
+                "Team Name": "[parameters('team_name')]",
+                "Team Contact": "[parameters('team_contact')]",
+                "Destroy Me": "[parameters('destroy_me')]"
               },
               "properties": {
                 "name": "[variables('serverFarmName')]",
@@ -125,8 +140,12 @@
       "apiVersion": "2016-08-01",
       "tags": {
         "[concat('hidden-related:', variables('serverFarmId'))]": "Resource",
-        "displayName": "ASE-WEB-APP",
-        "environment": "[parameters('env')]"
+        "DisplayName": "ASE-WEB-APP",
+        "Deployment Environment": "[parameters('env')]",
+        "Team Name": "[parameters('team_name')]",
+        "Team Contact": "[parameters('team_contact')]",
+        "Tier": "[parameters('tier')]",
+        "Destroy Me": "[parameters('destroy_me')]"
       },
       "dependsOn": [
         "[concat('aspDeploy-', variables('serverFarmName'))]"
@@ -155,7 +174,13 @@
           "type": "hostNameBindings",
           "apiVersion": "2016-08-01",
           "location": "[parameters('location')]",
-          "tags": {},
+          "tags": {
+            "Deployment Environment": "[parameters('env')]",
+            "Team Name": "[parameters('team_name')]",
+            "Team Contact": "[parameters('team_contact')]",
+            "Tier": "[parameters('tier')]",
+            "Destroy Me": "[parameters('destroy_me')]"
+          },
           "properties": {
             "siteName": "[concat('tm', parameters('additional_host_name'))]",
             "hostNameType": "Verified"
@@ -170,7 +195,12 @@
           "type": "hostNameBindings",
           "apiVersion": "2016-08-01",
           "location": "[parameters('location')]",
-          "tags": {},
+          "tags": {
+            "Deployment Environment": "[parameters('env')]",
+            "Team Name": "[parameters('team_name')]",
+            "Team Contact": "[parameters('team_contact')]",
+            "Destroy Me": "[parameters('destroy_me')]"
+          },
           "properties": {
             "siteName": "[parameters('additional_host_name')]",
             "hostNameType": "Verified"
@@ -186,7 +216,12 @@
           "type": "hostNameBindings",
           "apiVersion": "2016-08-01",
           "location": "[parameters('location')]",
-          "tags": {},
+          "tags": {
+            "Deployment Environment": "[parameters('env')]",
+            "Team Name": "[parameters('team_name')]",
+            "Team Contact": "[parameters('team_contact')]",
+            "Destroy Me": "[parameters('destroy_me')]"
+          },
           "properties": {
             "siteName": "[variables('trafficmanager')]",
             "hostNameType": "Verified"
@@ -204,7 +239,12 @@
             "[concat('Microsoft.Web/sites/', parameters('Name'))]"
           ],
           "tags": {
-            "displayName": "slotConfigNames"
+            "Display Name": "slotConfigNames",
+            "Deployment Environment": "[parameters('env')]",
+            "Team Name": "[parameters('team_name')]",
+            "Team Contact": "[parameters('team_contact')]",
+            "Tier": "[parameters('tier')]",
+            "Destroy Me": "[parameters('destroy_me')]"
           },
           "properties": {
             "appSettingNames": [
@@ -233,7 +273,12 @@
         "[resourceId('Microsoft.Web/sites', parameters('name'))]"
       ],
       "tags": {
-        "displyName": "[concat(parameters('stagingSlotName'), ' Slot')]"
+        "Display Name": "[concat(parameters('stagingSlotName'), ' Slot')]",
+        "Deployment Environment": "[parameters('env')]",
+        "Team Name": "[parameters('team_name')]",
+        "Team Contact": "[parameters('team_contact')]",
+        "Tier": "[parameters('tier')]",
+        "Destroy Me": "[parameters('destroy_me')]"
       },
       "location": "[parameters('location')]",
       "properties": {

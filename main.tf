@@ -32,6 +32,13 @@ resource "azurerm_application_insights" "appinsights" {
   location            = "${var.appinsights_location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   application_type    = "${var.application_type}"
+
+  tags {
+    "Deployment Environment" = "${var.env}"
+    "Team Name"              = "${var.team_name}"
+    "Team Contact"           = "${var.team_contact}"
+    "Destroy Me"             = "${var.destroy_me}"
+  }
 }
 
 locals {
@@ -67,6 +74,10 @@ resource "azurerm_template_deployment" "app_service_site" {
     is_frontend          = "${var.is_frontend}"
     web_sockets_enabled  = "${var.web_sockets_enabled}"
     asp_name             = "${var.asp_name}-${var.env}"
+    team_name            = "${var.team_name}"
+    team_contact         = "${var.team_contact}"
+    tier                 = "${var.tier}"
+    destroy_me           = "${var.destroy_me}"
   }
 }
 
