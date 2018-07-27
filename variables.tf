@@ -137,3 +137,27 @@ variable "asp_name" {
 variable "common_tags" {
   type    = "map"
 }
+
+variable "team_name" {
+  default = "Not Supplied"
+  type = "string"
+  description = "(256 Char Max) Enter the name of your team here. This is useful to tie your different products together in the Azure Portal using Tags."
+}
+
+variable "team_contact" {
+  default = "Not Supplied"
+  type = "string"
+  description = "(256 char max) Enter contact information here for your team. Usually your team slack channel e.g. #Cloud-Native"
+}
+
+variable "tier" {
+  type        = "string"
+  default     = "Not Supplied"
+  description = "Choose Either Front-End, Back-End or Database. This may determine which ASE you application gets placed on."
+}
+
+variable "destroy_me" {
+  type        = "string"
+  default     = "No"
+  description = "Choose either Yes or No. This is planned to auto-cleanup resources but currently just sets a tag."
+}
