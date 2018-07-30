@@ -131,7 +131,7 @@ variable "shutterURL" {
 }
 
 variable "asp_name" {
-  default = "null"
+  default = "rhubarb"
 }
 
 variable "common_tags" {
