@@ -94,6 +94,46 @@
   },
   "resources": [
     {
+      "apiVersion": "2017-05-10",
+      "name": "[concat('aspDeploy-', variables('serverFarmName'))]",
+      "type": "Microsoft.Resources/deployments",
+      "resourceGroup": "[variables('serverFarmRG')]",
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": [
+            {
+              "name": "[variables('serverFarmName')]",
+              "type": "Microsoft.Web/serverfarms",
+              "location": "[parameters('location')]",
+              "apiVersion": "2016-09-01",
+              "tags": {
+                "Display Name": "Application Service Plan",
+                "Deployment Environment": "[parameters('env')]",
+                "Team Name": "[parameters('team_name')]",
+                "Team Contact": "[parameters('team_contact')]",
+                "Destroy Me": "[parameters('destroy_me')]"
+              },
+              "properties": {
+                "name": "[variables('serverFarmName')]",
+                "hostingEnvironment": "[concat('core-compute-', parameters('env'))]",
+                "hostingEnvironmentId": "[resourceId('Microsoft.Web/hostingEnvironments', concat('core-compute-', parameters('env')))]"
+              },
+              "sku": {
+                "name": "I2",
+                "tier": "Isolated",
+                "size": "I2",
+                "family": "I",
+                "capacity": "[parameters('capacity')]"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "[parameters('name')]",
       "type": "Microsoft.Web/sites",
       "location": "[parameters('location')]",
