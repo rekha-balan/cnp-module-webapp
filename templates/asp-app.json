@@ -87,7 +87,7 @@
     "trafficmanager": "[concat('hmcts-', parameters('name'),'.trafficmanager.net')]",
     "aspname": "[concat(parameters('asp_name'), '-asp')]",
     "additional_host_name_resource": "[concat(parameters('name'), '/', if(equals(parameters('additional_host_name'),''),'default',parameters('additional_host_name')))]",
-    "aspResourceGroup": "[concat(parameters('asp_name'), '-shared-infrastructure-', parameters('env'))]",
+    "aspResourceGroup": "['custard-shared-infrastructure-sandboxv2']",
     "serverFarmName": "[if(contains(parameters('asp_name'), 'null'), parameters('name'), variables('aspname'))]",
     "serverFarmRG": "[if(contains(parameters('asp_name'), 'null'),  parameters('name'), variables('aspResourceGroup'))]",
     "serverFarmId": "[if(contains(parameters('asp_name'), 'null'), resourceId('Microsoft.Web/serverfarms', variables('serverFarmName')), resourceId(variables('aspResourceGroup'), 'Microsoft.Web/serverfarms', variables('serverFarmName')))]"
