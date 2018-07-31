@@ -87,52 +87,12 @@
     "trafficmanager": "[concat('hmcts-', parameters('name'),'.trafficmanager.net')]",
     "aspname": "[concat(parameters('asp_name'), '-asp')]",
     "additional_host_name_resource": "[concat(parameters('name'), '/', if(equals(parameters('additional_host_name'),''),'default',parameters('additional_host_name')))]",
-    "aspResourceGroup": "[concat('mgmt-asp-', parameters('env'))]",
+    "aspResourceGroup": "[concat(parameters('asp_name'), '-shared-infrastructure', parameters('env'))]",
     "serverFarmName": "[if(contains(parameters('asp_name'), 'null'), parameters('name'), variables('aspname'))]",
     "serverFarmRG": "[if(contains(parameters('asp_name'), 'null'),  parameters('name'), variables('aspResourceGroup'))]",
     "serverFarmId": "[if(contains(parameters('asp_name'), 'null'), resourceId('Microsoft.Web/serverfarms', variables('serverFarmName')), resourceId(variables('aspResourceGroup'), 'Microsoft.Web/serverfarms', variables('serverFarmName')))]"
   },
   "resources": [
-    {
-      "apiVersion": "2017-05-10",
-      "name": "[concat('aspDeploy-', variables('serverFarmName'))]",
-      "type": "Microsoft.Resources/deployments",
-      "resourceGroup": "[variables('serverFarmRG')]",
-      "properties": {
-        "mode": "Incremental",
-        "template": {
-          "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-          "contentVersion": "1.0.0.0",
-          "resources": [
-            {
-              "name": "[variables('serverFarmName')]",
-              "type": "Microsoft.Web/serverfarms",
-              "location": "[parameters('location')]",
-              "apiVersion": "2016-09-01",
-              "tags": {
-                "Display Name": "Application Service Plan",
-                "Deployment Environment": "[parameters('env')]",
-                "Team Name": "[parameters('team_name')]",
-                "Team Contact": "[parameters('team_contact')]",
-                "Destroy Me": "[parameters('destroy_me')]"
-              },
-              "properties": {
-                "name": "[variables('serverFarmName')]",
-                "hostingEnvironment": "[concat('core-compute-', parameters('env'))]",
-                "hostingEnvironmentId": "[resourceId('Microsoft.Web/hostingEnvironments', concat('core-compute-', parameters('env')))]"
-              },
-              "sku": {
-                "name": "I2",
-                "tier": "Isolated",
-                "size": "I2",
-                "family": "I",
-                "capacity": "[parameters('capacity')]"
-              }
-            }
-          ]
-        }
-      }
-    },
     {
       "name": "[parameters('name')]",
       "type": "Microsoft.Web/sites",
