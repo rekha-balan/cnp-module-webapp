@@ -134,6 +134,10 @@ variable "asp_name" {
   default = "null"
 }
 
+variable "asp_resource_group_name" {
+  default = "null"
+}
+
 variable "common_tags" {
   type    = "map"
 }
