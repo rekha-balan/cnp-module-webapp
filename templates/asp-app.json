@@ -215,23 +215,6 @@
           ]
         },
         {
-          "condition": "[not(contains(parameters('additional_host_names'), 'null'))]",
-          "type":"Microsoft.Web/sites/hostNameBindings",
-          "name":"[concat(parameters('name'), '/' , parameters('additional_host_names')[copyIndex()])]",
-          "apiVersion":"2016-08-01",
-          "location": "[parameters('location')]",
-          "properties":{
-            "siteName": "[parameters('additional_host_names')[copyIndex()]]",
-            "hostNameType": "Verified"
-          },
-          "copy": { 
-              "name": "bindingsCopy", 
-              "count": "[length(parameters('additional_host_names'))]",
-              "mode": "serial",
-              "batchSize": 1
-          }
-      },
-        {
           "name": "slotConfigNames",
           "type": "config",
           "apiVersion": "2015-08-01",
@@ -303,6 +286,24 @@
           "properties": "[base64ToJson(variables('base64SlotAppSettingObject'))]"
         }
       ]
-    }
+    },
+    {
+      "type":"Microsoft.Web/sites/hostnameBindings",
+      "condition": "[not(contains(parameters('additional_host_names'), 'null'))]",
+      "name":"[concat(parameters('name'), '/', parameters('additional_host_names')[copyIndex()])]",
+      "apiVersion":"2016-08-01",
+      "location":"[resourceGroup().location]",
+      "properties":{
+        "siteName": "parameters('additional_host_names')[copyIndex()])",
+        "hostNameType": "Verified"
+      },
+      "copy": {
+        "count": "[length(parameters('additional_host_names')[copyIndex())]",
+        "mode": "Parallel"
+      },
+      "dependsOn": [
+          "[concat('Microsoft.Web/sites/',parameters('name'))]"
+      ]
+  }
   ]
 }
