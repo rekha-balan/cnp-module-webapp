@@ -298,7 +298,7 @@
         "hostNameType": "Verified"
       },
       "copy": {
-        "count": "[length(parameters('additional_host_names')[copyIndex())]",
+        "count": "[length(parameters('additional_host_names'))]",
         "mode": "Parallel"
       },
       "dependsOn": [
