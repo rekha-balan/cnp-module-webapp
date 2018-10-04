@@ -86,6 +86,10 @@
     },
     "teamName": {
       "type": "string"
+    },
+    "additional_host_names": {
+      "type": "array",
+      "defaultValue": ["null"]
     }
   },
   "variables": {
@@ -210,6 +214,23 @@
             "[parameters('additional_host_name')]"
           ]
         },
+        {
+          "condition": "[not(contains(parameters('additional_host_names'), 'null'))]",
+          "type":"Microsoft.Web/sites/hostNameBindings",
+          "name":"[concat(parameters('name'), '/' , parameters('additional_host_names')[copyIndex()])]",
+          "apiVersion":"2016-08-01",
+          "location": "[parameters('location')]",
+          "properties":{
+            "siteName": "[parameters('additional_host_names')[copyIndex()]]",
+            "hostNameType": "Verified"
+          },
+          "copy": { 
+              "name": "bindingsCopy", 
+              "count": "[length(parameters('additional_host_names'))]",
+              "mode": "serial",
+              "batchSize": 1
+          }
+      },
         {
           "name": "slotConfigNames",
           "type": "config",
